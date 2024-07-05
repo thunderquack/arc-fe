@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<boolean> {
-    return this.http.post<{ token: string }>('http://arc-be:3000/api/login', { username, password })
+    return this.http.post<{ token: string }>(`/api/login`, { username, password })
       .pipe(
         map(response => {
           if (response.token) {
@@ -21,8 +21,12 @@ export class AuthService {
           }
           return false;
         }),
-        catchError(error => {
-          console.error(error);
+        catchError((error: HttpErrorResponse) => {
+          if (error.error instanceof ErrorEvent) {
+            console.error('Client-side error:', error.error.message);
+          } else {
+            console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+          }
           return of(false);
         })
       );
