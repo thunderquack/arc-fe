@@ -1,0 +1,27 @@
+.document-search-container {
+    padding: 20px;
+  }
+  
+  .document-search-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  .document-search-container form {
+    margin-bottom: 20px;
+  }
+  
+  .document-search-container table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .document-search-container th, .document-search-container td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .document-search-container th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  
