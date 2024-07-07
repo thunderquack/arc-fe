@@ -1,5 +1,23 @@
 <div class="dashboard-container">
-    <h2>Welcome to the Dashboard</h2>
-    <p>This is the dashboard component.</p>
-  </div>
-  
+  <h2>Welcome to the Dashboard</h2>
+  <p>This is the dashboard component.</p>
+
+  <form (submit)="onUploadDocument($event)">
+    <div>
+      <label for="documentTitle">Document Title:</label>
+      <input type="text" id="documentTitle" [(ngModel)]="documentTitle" name="documentTitle" required>
+    </div>
+
+    <div>
+      <label for="file">Choose file:</label>
+      <input type="file" id="file" (change)="onFileSelected($event)" required>
+    </div>
+
+    <div>
+      <label for="permission">Permission:</label>
+      <input type="text" id="permission" [(ngModel)]="permission" name="permission" required>
+    </div>
+
+    <button type="submit">Upload Document</button>
+  </form>
+</div>
