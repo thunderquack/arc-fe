@@ -17,6 +17,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { DocumentComponent } from './document/document.component';
+import { DocumentSearchComponent } from './document-search/document-search.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { DocumentComponent } from './document/document.component';
     DashboardComponent,
     LoginComponent,
     DocumentComponent,
+    DocumentSearchComponent,
   ],
   imports: [
     BrowserModule,

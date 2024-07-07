@@ -1,0 +1,27 @@
+<div class="document-search-container">
+    <h2>Document Search</h2>
+    <form (submit)="onSearch($event)">
+      <div>
+        <input type="text" id="searchQuery" placeholder="Search documents" [(ngModel)]="searchQuery" name="searchQuery">
+        <button type="submit">Search</button>
+      </div>
+    </form>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Number of Pages</th>
+          <th>Upload Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let document of documents">
+          <td>{{ document.title }}</td>
+          <td>{{ document.pages.length }}</td>
+          <td>{{ document.created_at | date }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
