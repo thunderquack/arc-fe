@@ -20,7 +20,7 @@ export class LoginComponent {
     this.authService.login(this.username, this.password).subscribe(
       success => {
         if (success) {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/document-search']);
         } else {
           alert('Login failed');
         }
