@@ -17,6 +17,7 @@
                 <th>Upload Date</th>
                 <th>Title</th>
                 <th>Number of Pages</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,9 @@
                 <td>{{ document.created_at | date }}</td>
                 <td>{{ document.title }}</td>
                 <td>{{ document.pages }}</td>
+                <td>
+                    <button (click)="editDocument(document.id)">Edit</button>
+                </td>
             </tr>
         </tbody>
     </table>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-document-search',
@@ -10,9 +11,9 @@ export class DocumentSearchComponent implements OnInit {
   searchQuery: string = '';
   documents: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadDocuments();
   }
 
@@ -21,17 +22,21 @@ export class DocumentSearchComponent implements OnInit {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     this.http.get<any[]>('/api/documents', { headers }).subscribe({
-      next: (data) => {
-        this.documents = data;
+      next: (response) => {
+        this.documents = response;
       },
       error: (error) => {
-        console.error('Error fetching documents', error);
+        console.error('Error loading documents', error);
       }
     });
   }
 
   onSearch(event: Event) {
     event.preventDefault();
-    // Here you can implement the search functionality later
+    this.loadDocuments();  // Here you can add filtering logic based on searchQuery
+  }
+
+  editDocument(documentId: string) {
+    this.router.navigate(['/document', documentId]);
   }
 }
