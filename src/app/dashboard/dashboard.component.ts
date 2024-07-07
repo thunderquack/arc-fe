@@ -9,7 +9,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class DashboardComponent {
   documentTitle: string = '';
   selectedFile: File | null = null;
-  permission: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -34,7 +33,7 @@ export class DashboardComponent {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
     formData.append('title', this.documentTitle);
-    formData.append('permission', this.permission);
+    formData.append('permission', 'write'); // Assign 'write' permission by default
 
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
