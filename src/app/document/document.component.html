@@ -1,1 +1,45 @@
-<p>document works!</p>
+<mat-toolbar color="primary">
+    <span>Document Editor</span>
+  </mat-toolbar>
+  
+  <div class="container">
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav mode="side" opened>
+        <mat-nav-list>
+          <!-- Список страниц документа -->
+          <a mat-list-item *ngFor="let page of pages" (click)="selectPage(page)">
+            Page {{ page.pageNumber }}
+          </a>
+        </mat-nav-list>
+      </mat-sidenav>
+  
+      <mat-sidenav-content>
+        <div class="toolbar">
+          <mat-form-field>
+            <mat-label>Document Title</mat-label>
+            <input matInput [(ngModel)]="documentTitle">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Creator</mat-label>
+            <input matInput [(ngModel)]="creator" disabled>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Date</mat-label>
+            <input matInput [(ngModel)]="date" disabled>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Content Summary</mat-label>
+            <textarea matInput [(ngModel)]="summary"></textarea>
+          </mat-form-field>
+        </div>
+  
+        <div class="content">
+          <textarea matInput placeholder="Recognized Text" [(ngModel)]="recognizedText"></textarea>
+          <div class="page-viewer">
+            <!-- Просмотр страницы -->
+            <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
+          </div>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
