@@ -34,7 +34,10 @@
         </div>
   
         <div class="content">
-          <textarea matInput placeholder="Recognized Text" [(ngModel)]="recognizedText"></textarea>
+          <mat-form-field class="full-width">
+            <mat-label>Recognized Text</mat-label>
+            <textarea matInput [(ngModel)]="recognizedText"></textarea>
+          </mat-form-field>
           <div class="page-viewer">
             <!-- Просмотр страницы -->
             <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
@@ -43,3 +46,4 @@
       </mat-sidenav-content>
     </mat-sidenav-container>
   </div>
+  
