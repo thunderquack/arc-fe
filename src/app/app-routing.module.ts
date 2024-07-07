@@ -8,7 +8,7 @@ import { DocumentSearchComponent } from './document-search/document-search.compo
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/document-search', pathMatch: 'full' },
   { path: 'document-search', component: DocumentSearchComponent, canActivate: [AuthGuard] },
 ];
 
