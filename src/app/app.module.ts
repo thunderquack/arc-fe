@@ -16,12 +16,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
+import { DocumentComponent } from './document/document.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     LoginComponent,
+    DocumentComponent,
   ],
   imports: [
     BrowserModule,
