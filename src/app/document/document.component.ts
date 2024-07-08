@@ -14,7 +14,7 @@ export class DocumentComponent implements OnInit {
   summary: string = '';
   recognizedText: string = '';
   pages: any[] = [];
-  selectedPage: any = null;
+  selectedPage: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -67,7 +67,7 @@ export class DocumentComponent implements OnInit {
     event.preventDefault();
 
     if (!this.selectedPage) {
-      alert('Please select a page first.');
+      console.error('No page selected');
       return;
     }
 
@@ -79,29 +79,30 @@ export class DocumentComponent implements OnInit {
       const file: File = e.target.files[0];
       if (file) {
         const documentId = this.route.snapshot.paramMap.get('id');
-        if (documentId && this.selectedPage && this.selectedPage.id) {
-          const pageId = this.selectedPage.id;
-          const formData = new FormData();
-          formData.append('file', file);
-
-          const token = localStorage.getItem('authToken');
-          const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-          this.http.put(`/api/documents/${documentId}/pages/${pageId}`, formData, { headers }).subscribe({
-            next: (response) => {
-              console.log('Page replaced successfully', response);
-              this.loadDocument(documentId);  // Reload the document to get updated pages
-            },
-            error: (error) => {
-              console.error('Error replacing page', error);
-            },
-            complete: () => {
-              console.log('Replacement complete');
-            }
-          });
-        } else {
+        const pageId = this.selectedPage?.id;
+        if (!documentId || !pageId) {
           console.error('No document ID or page ID available');
+          return;
         }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+        this.http.put(`/api/documents/${documentId}/pages/${pageId}`, formData, { headers }).subscribe({
+          next: (response) => {
+            console.log('Page replaced successfully', response);
+            this.loadDocument(documentId);  // Reload the document to get updated pages
+          },
+          error: (error) => {
+            console.error('Error replacing page', error);
+          },
+          complete: () => {
+            console.log('Replacement complete');
+          }
+        });
       }
     };
 
@@ -119,28 +120,29 @@ export class DocumentComponent implements OnInit {
       const file: File = e.target.files[0];
       if (file) {
         const documentId = this.route.snapshot.paramMap.get('id');
-        if (documentId) {
-          const formData = new FormData();
-          formData.append('file', file);
-
-          const token = localStorage.getItem('authToken');
-          const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-          this.http.post(`/api/documents/${documentId}/pages`, formData, { headers }).subscribe({
-            next: (response) => {
-              console.log('Page added successfully', response);
-              this.loadDocument(documentId);  // Reload the document to get updated pages
-            },
-            error: (error) => {
-              console.error('Error adding page', error);
-            },
-            complete: () => {
-              console.log('Addition complete');
-            }
-          });
-        } else {
+        if (!documentId) {
           console.error('No document ID available');
+          return;
         }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+        this.http.post(`/api/documents/${documentId}/pages`, formData, { headers }).subscribe({
+          next: (response) => {
+            console.log('Page added successfully', response);
+            this.loadDocument(documentId);  // Reload the document to get updated pages
+          },
+          error: (error) => {
+            console.error('Error adding page', error);
+          },
+          complete: () => {
+            console.log('Addition complete');
+          }
+        });
       }
     };
 
@@ -151,33 +153,34 @@ export class DocumentComponent implements OnInit {
     event.preventDefault();
 
     if (!this.selectedPage) {
-      alert('Please select a page first.');
+      console.error('No page selected');
       return;
     }
 
     if (confirm('Are you sure you want to delete this page?')) {
       const documentId = this.route.snapshot.paramMap.get('id');
-      if (documentId && this.selectedPage && this.selectedPage.id) {
-        const pageId = this.selectedPage.id;
+      const pageId = this.selectedPage?.id;
 
-        const token = localStorage.getItem('authToken');
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-        this.http.delete(`/api/documents/${documentId}/pages/${pageId}`, { headers }).subscribe({
-          next: (response) => {
-            console.log('Page deleted successfully', response);
-            this.loadDocument(documentId);  // Reload the document to get updated pages
-          },
-          error: (error) => {
-            console.error('Error deleting page', error);
-          },
-          complete: () => {
-            console.log('Deletion complete');
-          }
-        });
-      } else {
+      if (!documentId || !pageId) {
         console.error('No document ID or page ID available');
+        return;
       }
+
+      const token = localStorage.getItem('authToken');
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+      this.http.delete(`/api/documents/${documentId}/pages/${pageId}`, { headers }).subscribe({
+        next: (response) => {
+          console.log('Page deleted successfully', response);
+          this.loadDocument(documentId);  // Reload the document to get updated pages
+        },
+        error: (error) => {
+          console.error('Error deleting page', error);
+        },
+        complete: () => {
+          console.log('Deletion complete');
+        }
+      });
     }
   }
 }

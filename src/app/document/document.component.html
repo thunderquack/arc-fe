@@ -11,8 +11,9 @@
             Page {{ page.page_number }}
           </a>
         </mat-nav-list>
-        <button mat-raised-button color="primary" (click)="onAddPage($event)">Add Page</button>
-        <button mat-raised-button color="warn" (click)="onDeletePage($event)">Delete Page</button>
+        <button mat-button (click)="onAddPage($event)">Add Page</button>
+        <button mat-button [disabled]="!selectedPage" (click)="onReplacePage($event)">Replace Page</button>
+        <button mat-button [disabled]="!selectedPage" (click)="onDeletePage($event)">Delete Page</button>
       </mat-sidenav>
   
       <mat-sidenav-content>
@@ -40,7 +41,6 @@
           <div class="page-viewer">
             <!-- Просмотр страницы -->
             <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
-            <button mat-raised-button color="primary" (click)="onReplacePage($event)">Replace Page</button>
           </div>
         </div>
       </mat-sidenav-content>
