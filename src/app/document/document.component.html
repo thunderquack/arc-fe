@@ -29,24 +29,28 @@
       </mat-form-field>
     </div>
   
-    <as-split [direction]="'horizontal'" [gutterSize]="10">
-      <as-split-area [size]="20">
-        <mat-nav-list>
-          <div *ngFor="let page of pages" class="page-thumbnail" (click)="selectPage(page)">
-            <img [src]="page.thumbnail_data" alt="Page Thumbnail">
-            <div class="page-number">{{ page.page_number }}</div>
+    <as-split [direction]="'horizontal'" [gutterSize]="10" [unit]="'pixel'">
+        <as-split-area [size]="200">
+          <mat-nav-list>
+            <div *ngFor="let page of pages" 
+                 class="page-thumbnail" 
+                 (click)="selectPage(page)"
+                 [class.selected]="selectedPage?.page_id === page.page_id">
+              <img [src]="page.thumbnail_data" alt="Page Thumbnail">
+              <div class="page-number">{{ page.page_number }}</div>
+            </div>
+          </mat-nav-list>
+          <button mat-button (click)="onAddPage($event)">Add Page</button>
+          <button mat-button [disabled]="!selectedPage" (click)="onReplacePage($event)">Replace Page</button>
+          <button mat-button [disabled]="!selectedPage" (click)="onDeletePage($event)">Delete Page</button>
+        </as-split-area>
+        <as-split-area>
+          <div class="page-viewer">
+            <!-- Просмотр страницы -->
+            <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
           </div>
-        </mat-nav-list>
-        <button mat-button (click)="onAddPage($event)">Add Page</button>
-        <button mat-button [disabled]="!selectedPage" (click)="onReplacePage($event)">Replace Page</button>
-        <button mat-button [disabled]="!selectedPage" (click)="onDeletePage($event)">Delete Page</button>
-      </as-split-area>
-      <as-split-area [size]="80">
-        <div class="page-viewer">
-          <!-- Просмотр страницы -->
-          <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
-        </div>
-      </as-split-area>
-    </as-split>
+        </as-split-area>
+      </as-split>
+      
   </div>
   

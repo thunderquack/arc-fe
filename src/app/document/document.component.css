@@ -12,7 +12,7 @@
   }
   
   .toolbar mat-form-field {
-    height: 78px; /* Установите одинаковую высоту для всех полей */
+    height: 78px;
   }
   
   .document-title {
@@ -56,7 +56,7 @@
   as-split {
     flex: 1;
     display: flex;
-    height: calc(100% - 300px); /* Adjust this value based on the height of the toolbar and recognized text */
+    height: calc(100% - 300px);
   }
   
   mat-toolbar + .recognized-text {
@@ -66,15 +66,23 @@
   .page-thumbnail {
     text-align: center;
     margin-bottom: 1em;
+    cursor: pointer;
+    border: 2px solid transparent; 
+    border-radius: 4px;
+    transition: border-color 0.3s; 
   }
   
   .page-thumbnail img {
     max-width: 100%;
     height: auto;
-    max-height: 170px; /* Ограничиваем высоту миниатюры */
+    max-height: 170px; 
   }
   
-  .page-number {
+  .page-thumbnail .page-number {
     margin-top: 0.5em;
   }
   
+  .page-thumbnail.selected {
+    border-color: #3f51b5; 
+    background-color: #e8eaf6;
+  }  
