@@ -79,7 +79,7 @@ export class DocumentComponent implements OnInit {
       const file: File = e.target.files[0];
       if (file) {
         const documentId = this.route.snapshot.paramMap.get('id');
-        const pageId = this.selectedPage?.id;
+        const pageId = this.selectedPage?.page_id;
         if (!documentId || !pageId) {
           console.error('No document ID or page ID available');
           return;
@@ -159,7 +159,7 @@ export class DocumentComponent implements OnInit {
 
     if (confirm('Are you sure you want to delete this page?')) {
       const documentId = this.route.snapshot.paramMap.get('id');
-      const pageId = this.selectedPage?.id;
+      const pageId = this.selectedPage?.page_id;
 
       if (!documentId || !pageId) {
         console.error('No document ID or page ID available');
