@@ -32,10 +32,10 @@
     <as-split [direction]="'horizontal'" [gutterSize]="10">
       <as-split-area [size]="20">
         <mat-nav-list>
-          <a mat-list-item *ngFor="let page of pages" (click)="selectPage(page)" class="page-item">
-            <img [src]="page.thumbnail_data" class="thumbnail">
+          <div *ngFor="let page of pages" class="page-thumbnail" (click)="selectPage(page)">
+            <img [src]="page.thumbnail_data" alt="Page Thumbnail">
             <div class="page-number">{{ page.page_number }}</div>
-          </a>
+          </div>
         </mat-nav-list>
         <button mat-button (click)="onAddPage($event)">Add Page</button>
         <button mat-button [disabled]="!selectedPage" (click)="onReplacePage($event)">Replace Page</button>
