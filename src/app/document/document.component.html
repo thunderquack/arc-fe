@@ -4,19 +4,19 @@
   
   <div class="container">
     <div class="toolbar">
-      <mat-form-field>
+      <mat-form-field class="document-title">
         <mat-label>Document Title</mat-label>
         <input matInput [(ngModel)]="documentTitle">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="creator">
         <mat-label>Creator</mat-label>
         <input matInput [(ngModel)]="creator" disabled>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="date">
         <mat-label>Date</mat-label>
         <input matInput [(ngModel)]="date" disabled>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="content-summary">
         <mat-label>Content Summary</mat-label>
         <textarea matInput [(ngModel)]="summary"></textarea>
       </mat-form-field>

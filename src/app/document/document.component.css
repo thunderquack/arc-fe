@@ -6,9 +6,23 @@
   
   .toolbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 1em;
+    gap: 1em;
+  }
+  
+  .document-title {
+    flex: 2;
+  }
+  
+  .creator,
+  .date {
+    flex: 1;
+  }
+  
+  .content-summary {
+    flex: 4;
+    height: 56px; /* Устанавливаем высоту для Content Summary */
   }
   
   .recognized-text {
@@ -39,6 +53,10 @@
   as-split {
     flex: 1;
     display: flex;
-    height: calc(100% - 150px); /* Adjust this value based on the height of the toolbar and recognized text */
+    height: calc(100% - 300px); /* Adjust this value based on the height of the toolbar and recognized text */
+  }
+  
+  mat-toolbar + .recognized-text {
+    margin-top: 1em;
   }
   
