@@ -11,6 +11,10 @@
     gap: 1em;
   }
   
+  .toolbar mat-form-field {
+    height: 78px; /* Установите одинаковую высоту для всех полей */
+  }
+  
   .document-title {
     flex: 2;
   }
@@ -22,7 +26,6 @@
   
   .content-summary {
     flex: 4;
-    height: 56px; /* Устанавливаем высоту для Content Summary */
   }
   
   .recognized-text {
