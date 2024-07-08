@@ -3,8 +3,8 @@
   </mat-toolbar>
   
   <div class="container">
-    <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav mode="side" opened>
+    <as-split [gutterSize]="10">
+      <as-split-area size="30">
         <mat-nav-list>
           <!-- Список страниц документа -->
           <a mat-list-item *ngFor="let page of pages" (click)="selectPage(page)">
@@ -14,9 +14,8 @@
         <button mat-button (click)="onAddPage($event)">Add Page</button>
         <button mat-button [disabled]="!selectedPage" (click)="onReplacePage($event)">Replace Page</button>
         <button mat-button [disabled]="!selectedPage" (click)="onDeletePage($event)">Delete Page</button>
-      </mat-sidenav>
-  
-      <mat-sidenav-content>
+      </as-split-area>
+      <as-split-area size="70">
         <div class="toolbar">
           <mat-form-field>
             <mat-label>Document Title</mat-label>
@@ -43,7 +42,7 @@
             <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
           </div>
         </div>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
+      </as-split-area>
+    </as-split>
   </div>
   

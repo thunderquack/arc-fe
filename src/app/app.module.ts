@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { DocumentComponent } from './document/document.component';
 import { DocumentSearchComponent } from './document-search/document-search.component';
+import { AngularSplitModule } from 'angular-split';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { DocumentSearchComponent } from './document-search/document-search.compo
     MatSidenavModule,
     MatListModule,
     MatInputModule,
+    AngularSplitModule,
   ],
   providers: [
     AuthService, 
