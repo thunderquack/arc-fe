@@ -8,9 +8,11 @@
         <mat-nav-list>
           <!-- Список страниц документа -->
           <a mat-list-item *ngFor="let page of pages" (click)="selectPage(page)">
-            Page {{ page.pageNumber }}
+            Page {{ page.page_number }}
           </a>
         </mat-nav-list>
+        <button mat-raised-button color="primary" (click)="onAddPage($event)">Add Page</button>
+        <button mat-raised-button color="warn" (click)="onDeletePage($event)">Delete Page</button>
       </mat-sidenav>
   
       <mat-sidenav-content>
@@ -34,13 +36,11 @@
         </div>
   
         <div class="content">
-          <mat-form-field class="full-width">
-            <mat-label>Recognized Text</mat-label>
-            <textarea matInput [(ngModel)]="recognizedText"></textarea>
-          </mat-form-field>
+          <textarea matInput placeholder="Recognized Text" [(ngModel)]="recognizedText"></textarea>
           <div class="page-viewer">
             <!-- Просмотр страницы -->
             <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
+            <button mat-raised-button color="primary" (click)="onReplacePage($event)">Replace Page</button>
           </div>
         </div>
       </mat-sidenav-content>
