@@ -192,6 +192,11 @@ export class DocumentComponent implements OnInit {
       const temp = this.pages[index];
       this.pages[index] = this.pages[index - 1];
       this.pages[index - 1] = temp;
+
+      // Update page numbers
+      this.pages[index].page_number++;
+      this.pages[index - 1].page_number--;
+
       this.updatePageOrder();
     }
   }
@@ -201,6 +206,11 @@ export class DocumentComponent implements OnInit {
       const temp = this.pages[index];
       this.pages[index] = this.pages[index + 1];
       this.pages[index + 1] = temp;
+
+      // Update page numbers
+      this.pages[index].page_number--;
+      this.pages[index + 1].page_number++;
+
       this.updatePageOrder();
     }
   }
