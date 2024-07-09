@@ -112,11 +112,11 @@ export class DocumentComponent implements OnInit {
 
   onAddPage(event: Event): void {
     event.preventDefault();
-
+  
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/png';
-
+  
     input.onchange = (e: any) => {
       const file: File = e.target.files[0];
       if (file) {
@@ -125,17 +125,18 @@ export class DocumentComponent implements OnInit {
           console.error('No document ID available');
           return;
         }
-
+  
         const formData = new FormData();
         formData.append('file', file);
-
+  
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
+  
         this.http.post(`/api/documents/${documentId}/pages`, formData, { headers }).subscribe({
           next: (response) => {
             console.log('Page added successfully', response);
-            this.loadDocument(documentId);  // Reload the document to get updated pages
+            this.loadDocument(documentId!);  // Reload the document to get updated pages
+            this.reorderPages(); // Перенумерация страниц
           },
           error: (error) => {
             console.error('Error adding page', error);
@@ -146,34 +147,35 @@ export class DocumentComponent implements OnInit {
         });
       }
     };
-
+  
     input.click();
-  }
+  }  
 
   onDeletePage(event: Event): void {
     event.preventDefault();
-
+  
     if (!this.selectedPage) {
       console.error('No page selected');
       return;
     }
-
+  
     if (confirm('Are you sure you want to delete this page?')) {
       const documentId = this.route.snapshot.paramMap.get('id');
       const pageId = this.selectedPage?.page_id;
-
+  
       if (!documentId || !pageId) {
         console.error('No document ID or page ID available');
         return;
       }
-
+  
       const token = localStorage.getItem('authToken');
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
+  
       this.http.delete(`/api/documents/${documentId}/pages/${pageId}`, { headers }).subscribe({
         next: (response) => {
           console.log('Page deleted successfully', response);
-          this.loadDocument(documentId);  // Reload the document to get updated pages
+          this.loadDocument(documentId!);  // Reload the document to get updated pages
+          this.reorderPages(); // Перенумерация страниц
         },
         error: (error) => {
           console.error('Error deleting page', error);
@@ -184,4 +186,55 @@ export class DocumentComponent implements OnInit {
       });
     }
   }
+  movePageUp(index: number): void {
+    if (index > 0) {
+      [this.pages[index - 1], this.pages[index]] = [this.pages[index], this.pages[index - 1]];
+      this.updatePageNumbers();
+      this.reorderPages();
+    }
+  }
+  
+  movePageDown(index: number): void {
+    if (index < this.pages.length - 1) {
+      [this.pages[index], this.pages[index + 1]] = [this.pages[index + 1], this.pages[index]];
+      this.updatePageNumbers();
+      this.reorderPages();
+    }
+  }
+  
+  updatePageNumbers(): void {
+    this.pages.forEach((page, index) => {
+      page.page_number = index + 1;
+    });
+  }
+  
+  reorderPages(): void {
+    const documentId = this.route.snapshot.paramMap.get('id');
+    if (!documentId) {
+      console.error('No document ID available');
+      return;
+    }
+  
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    const updatedPages = this.pages.map((page) => ({
+      page_id: page.page_id,
+      page_number: page.page_number
+    }));
+  
+    this.http.put(`/api/documents/${documentId}/reorder-pages`, updatedPages, { headers }).subscribe({
+      next: (response) => {
+        console.log('Pages reordered successfully', response);
+        this.loadDocument(documentId);  // Reload the document to get updated pages
+      },
+      error: (error) => {
+        console.error('Error reordering pages', error);
+      },
+      complete: () => {
+        console.log('Reordering complete');
+      }
+    });
+  }
+    
 }
