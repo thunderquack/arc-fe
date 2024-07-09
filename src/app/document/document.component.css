@@ -2,87 +2,99 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-  }
-  
-  .toolbar {
+}
+
+.toolbar {
     display: flex;
     align-items: center;
     padding: 1em;
     gap: 1em;
-  }
-  
-  .toolbar mat-form-field {
+}
+
+.toolbar mat-form-field {
     height: 78px;
-  }
-  
-  .document-title {
+}
+
+.document-title {
     flex: 2;
-  }
-  
-  .creator,
-  .date {
+}
+
+.creator,
+.date {
     flex: 1;
-  }
-  
-  .content-summary {
+}
+
+.content-summary {
     flex: 4;
-  }
-  
-  .recognized-text {
+}
+
+.recognized-text {
     padding: 1em;
-  }
-  
-  .page-container {
+}
+
+.page-container {
     flex: 1;
     display: flex;
     flex-direction: row;
     padding: 1em;
-  }
-  
-  .page-viewer {
+}
+
+.page-viewer {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: auto;
-  }
-  
-  .page-viewer img {
+}
+
+.page-viewer img {
     max-width: 100%;
     height: auto;
     object-fit: contain;
-  }
-  
-  as-split {
+}
+
+as-split {
     flex: 1;
     display: flex;
     height: calc(100% - 300px);
-  }
-  
-  mat-toolbar + .recognized-text {
+}
+
+mat-toolbar + .recognized-text {
     margin-top: 1em;
-  }
-  
-  .page-thumbnail {
+}
+
+.page-thumbnail {
     text-align: center;
     margin-bottom: 1em;
     cursor: pointer;
     border: 2px solid transparent; 
     border-radius: 4px;
     transition: border-color 0.3s; 
-  }
-  
-  .page-thumbnail img {
+}
+
+.thumbnail-container {
+    position: relative;
+}
+
+.page-thumbnail img {
     max-width: 100%;
     height: auto;
     max-height: 170px; 
-  }
-  
-  .page-thumbnail .page-number {
+}
+
+.page-thumbnail .buttons {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-thumbnail .page-number {
     margin-top: 0.5em;
-  }
-  
-  .page-thumbnail.selected {
+}
+
+.page-thumbnail.selected {
     border-color: #3f51b5; 
     background-color: #e8eaf6;
-  }  
+}

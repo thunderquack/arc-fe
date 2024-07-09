@@ -1,58 +1,60 @@
 <mat-toolbar color="primary">
     <span>Document Editor</span>
-  </mat-toolbar>
-  
-  <div class="container">
+</mat-toolbar>
+
+<div class="container">
     <div class="toolbar">
-      <mat-form-field class="document-title">
-        <mat-label>Document Title</mat-label>
-        <input matInput [(ngModel)]="documentTitle">
-      </mat-form-field>
-      <mat-form-field class="creator">
-        <mat-label>Creator</mat-label>
-        <input matInput [(ngModel)]="creator" disabled>
-      </mat-form-field>
-      <mat-form-field class="date">
-        <mat-label>Date</mat-label>
-        <input matInput [(ngModel)]="date" disabled>
-      </mat-form-field>
-      <mat-form-field class="content-summary">
-        <mat-label>Content Summary</mat-label>
-        <textarea matInput [(ngModel)]="summary"></textarea>
-      </mat-form-field>
+        <mat-form-field class="document-title">
+            <mat-label>Document Title</mat-label>
+            <input matInput [(ngModel)]="documentTitle">
+        </mat-form-field>
+        <mat-form-field class="creator">
+            <mat-label>Creator</mat-label>
+            <input matInput [(ngModel)]="creator" disabled>
+        </mat-form-field>
+        <mat-form-field class="date">
+            <mat-label>Date</mat-label>
+            <input matInput [(ngModel)]="date" disabled>
+        </mat-form-field>
+        <mat-form-field class="content-summary">
+            <mat-label>Content Summary</mat-label>
+            <textarea matInput [(ngModel)]="summary"></textarea>
+        </mat-form-field>
     </div>
-  
+
     <div class="recognized-text">
-      <mat-form-field style="width: 100%;">
-        <mat-label>Recognized Text</mat-label>
-        <textarea matInput [(ngModel)]="recognizedText"></textarea>
-      </mat-form-field>
+        <mat-form-field style="width: 100%;">
+            <mat-label>Recognized Text</mat-label>
+            <textarea matInput [(ngModel)]="recognizedText"></textarea>
+        </mat-form-field>
     </div>
-  
+
     <as-split [direction]="'horizontal'" [gutterSize]="10" [unit]="'pixel'">
         <as-split-area [size]="200">
-          <mat-nav-list>
-            <div *ngFor="let page of pages; let i = index"
-                 class="page-thumbnail" 
-                 (click)="selectPage(page)"
-                 [class.selected]="selectedPage?.page_id === page.page_id">
-              <img [src]="page.thumbnail_data" alt="Page Thumbnail">
-              <div class="page-number">{{ page.page_number }}</div>
-              <button mat-mini-button (click)="movePageUp(i)" [disabled]="i === 0">Up</button>
-              <button mat-mini-button (click)="movePageDown(i)" [disabled]="i === pages.length - 1">Down</button>
-            </div>
-          </mat-nav-list>
-          <button mat-button (click)="onAddPage($event)">Add Page</button>
-          <button mat-button [disabled]="!selectedPage" (click)="onReplacePage($event)">Replace Page</button>
-          <button mat-button [disabled]="!selectedPage" (click)="onDeletePage($event)">Delete Page</button>
+            <mat-nav-list>
+                <div *ngFor="let page of pages; let i = index" 
+                     class="page-thumbnail" 
+                     (click)="selectPage(page)"
+                     [class.selected]="selectedPage?.page_id === page.page_id">
+                    <div class="thumbnail-container">
+                        <img [src]="page.thumbnail_data" alt="Page Thumbnail">
+                        <div class="buttons">
+                            <button mat-mini-button (click)="movePageUp(i)" [disabled]="i === 0">↑</button>
+                            <button mat-mini-button (click)="movePageDown(i)" [disabled]="i === pages.length - 1">↓</button>
+                        </div>
+                    </div>
+                    <div class="page-number">{{ page.page_number }}</div>
+                </div>
+            </mat-nav-list>
+            <button mat-button (click)="onAddPage($event)">Add Page</button>
+            <button mat-button [disabled]="!selectedPage" (click)="onReplacePage($event)">Replace Page</button>
+            <button mat-button [disabled]="!selectedPage" (click)="onDeletePage($event)">Delete Page</button>
         </as-split-area>
         <as-split-area>
-          <div class="page-viewer">
-            <!-- Просмотр страницы -->
-            <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
-          </div>
+            <div class="page-viewer">
+                <!-- Просмотр страницы -->
+                <img *ngIf="selectedPage" [src]="selectedPage.image" alt="Document Page">
+            </div>
         </as-split-area>
-      </as-split>
-      
-  </div>
-  
+    </as-split>
+</div>
