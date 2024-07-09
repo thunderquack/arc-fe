@@ -19,7 +19,7 @@ export class DocumentComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const documentId: string | null = this.route.snapshot.paramMap.get('id');
@@ -112,11 +112,11 @@ export class DocumentComponent implements OnInit {
 
   onAddPage(event: Event): void {
     event.preventDefault();
-  
+
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/png';
-  
+
     input.onchange = (e: any) => {
       const file: File = e.target.files[0];
       if (file) {
@@ -125,13 +125,13 @@ export class DocumentComponent implements OnInit {
           console.error('No document ID available');
           return;
         }
-  
+
         const formData = new FormData();
         formData.append('file', file);
-  
+
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  
+
         this.http.post(`/api/documents/${documentId}/pages`, formData, { headers }).subscribe({
           next: (response) => {
             console.log('Page added successfully', response);
@@ -147,30 +147,30 @@ export class DocumentComponent implements OnInit {
         });
       }
     };
-  
+
     input.click();
-  }  
+  }
 
   onDeletePage(event: Event): void {
     event.preventDefault();
-  
+
     if (!this.selectedPage) {
       console.error('No page selected');
       return;
     }
-  
+
     if (confirm('Are you sure you want to delete this page?')) {
       const documentId = this.route.snapshot.paramMap.get('id');
       const pageId = this.selectedPage?.page_id;
-  
+
       if (!documentId || !pageId) {
         console.error('No document ID or page ID available');
         return;
       }
-  
+
       const token = localStorage.getItem('authToken');
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  
+
       this.http.delete(`/api/documents/${documentId}/pages/${pageId}`, { headers }).subscribe({
         next: (response) => {
           console.log('Page deleted successfully', response);
@@ -186,43 +186,65 @@ export class DocumentComponent implements OnInit {
       });
     }
   }
+
   movePageUp(index: number): void {
     if (index > 0) {
-      [this.pages[index - 1], this.pages[index]] = [this.pages[index], this.pages[index - 1]];
-      this.updatePageNumbers();
-      this.reorderPages();
+      const temp = this.pages[index];
+      this.pages[index] = this.pages[index - 1];
+      this.pages[index - 1] = temp;
+      this.updatePageOrder();
     }
   }
-  
+
   movePageDown(index: number): void {
     if (index < this.pages.length - 1) {
-      [this.pages[index], this.pages[index + 1]] = [this.pages[index + 1], this.pages[index]];
-      this.updatePageNumbers();
-      this.reorderPages();
+      const temp = this.pages[index];
+      this.pages[index] = this.pages[index + 1];
+      this.pages[index + 1] = temp;
+      this.updatePageOrder();
     }
   }
-  
-  updatePageNumbers(): void {
-    this.pages.forEach((page, index) => {
-      page.page_number = index + 1;
+
+  updatePageOrder(): void {
+    const documentId = this.route.snapshot.paramMap.get('id');
+    if (!documentId) {
+      console.error('No document ID available');
+      return;
+    }
+
+    const pageOrder = this.pages.map((page, index) => ({
+      page_id: page.page_id,
+      new_order: index + 1
+    }));
+
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.put(`/api/documents/${documentId}/reorder-pages`, pageOrder, { headers }).subscribe({
+      next: (response) => {
+        console.log('Pages reordered successfully', response);
+      },
+      error: (error) => {
+        console.error('Error reordering pages', error);
+      }
     });
   }
-  
+
   reorderPages(): void {
     const documentId = this.route.snapshot.paramMap.get('id');
     if (!documentId) {
       console.error('No document ID available');
       return;
     }
-  
+
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  
+
     const updatedPages = this.pages.map((page) => ({
       page_id: page.page_id,
       page_number: page.page_number
     }));
-  
+
     this.http.put(`/api/documents/${documentId}/reorder-pages`, updatedPages, { headers }).subscribe({
       next: (response) => {
         console.log('Pages reordered successfully', response);
@@ -236,5 +258,4 @@ export class DocumentComponent implements OnInit {
       }
     });
   }
-    
 }
