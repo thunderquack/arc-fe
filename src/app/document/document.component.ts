@@ -43,8 +43,9 @@ export class DocumentComponent implements OnInit {
           ...page,
           image: this.convertToBase64Image(page.image_data)
         }));
-        this.summary = response.summary || ''; // Add this if summary is available
-        this.recognizedText = response.recognizedText || ''; // Add this if recognizedText is available
+        this.pages.sort((a, b) => a.page_number - b.page_number);
+        this.summary = response.summary || '';
+        this.recognizedText = response.recognizedText || '';
       },
       error: (error) => {
         console.error('Error loading document', error);
