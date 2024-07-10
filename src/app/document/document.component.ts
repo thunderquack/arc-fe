@@ -15,6 +15,7 @@ export class DocumentComponent implements OnInit {
   recognizedText: string = '';
   pages: any[] = [];
   selectedPage: any;
+  loading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -308,7 +309,7 @@ export class DocumentComponent implements OnInit {
 
             const token = localStorage.getItem('authToken');
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
+            this.loading = true;
             this.http.put(`/api/documents/${documentId}/pages/${pageId}`, formData, { headers }).subscribe({
               next: (response) => {
                 console.log('Page rotated and replaced successfully', response);
@@ -319,9 +320,11 @@ export class DocumentComponent implements OnInit {
               },
               error: (error) => {
                 console.error('Error rotating and replacing page', error);
+                this.loading = false;
               },
               complete: () => {
                 console.log('Rotation complete');
+                this.loading = false;
               }
             });
           });

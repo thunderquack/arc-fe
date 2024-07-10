@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DocumentComponent } from './document/document.component';
 import { DocumentSearchComponent } from './document-search/document-search.component';
 import { AngularSplitModule } from 'angular-split';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { AngularSplitModule } from 'angular-split';
     MatListModule,
     MatInputModule,
     AngularSplitModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     AuthService, 
