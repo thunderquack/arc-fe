@@ -314,6 +314,8 @@ export class DocumentComponent implements OnInit {
                 console.log('Page rotated and replaced successfully', response);
                 this.pages[index].image = rotatedImage;
                 this.selectedPage.image = rotatedImage;
+                this.pages[index].thumbnail_data = rotatedImage;
+                this.selectedPage.thumbnail_data = rotatedImage;
               },
               error: (error) => {
                 console.error('Error rotating and replacing page', error);
@@ -323,6 +325,7 @@ export class DocumentComponent implements OnInit {
               }
             });
           });
+          this.loadDocument(documentId);
       }
     };
     img.src = page.image;
