@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-document',
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.css']
 })
-export class DocumentComponent implements OnInit {
+export class DocumentComponent implements OnInit, OnDestroy {
   documentTitle: string = '';
   creator: string = '';
   date: string = '';
@@ -16,6 +17,7 @@ export class DocumentComponent implements OnInit {
   pages: any[] = [];
   selectedPage: any;
   loading: boolean = false;
+  private recognizedTextSubscription: Subscription | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,8 +28,15 @@ export class DocumentComponent implements OnInit {
     const documentId: string | null = this.route.snapshot.paramMap.get('id');
     if (documentId) {
       this.loadDocument(documentId);
+      this.startRecognizedTextUpdates(documentId);
     } else {
       console.error('No document ID found in the route parameters');
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.recognizedTextSubscription) {
+      this.recognizedTextSubscription.unsubscribe();
     }
   }
 
@@ -47,11 +56,25 @@ export class DocumentComponent implements OnInit {
         }));
         this.pages.sort((a, b) => a.page_number - b.page_number);
         this.summary = response.summary || '';
-        this.recognizedText = response.recognizedText || '';
       },
       error: (error) => {
         console.error('Error loading document', error);
       }
+    });
+  }
+
+  startRecognizedTextUpdates(documentId: string): void {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    this.recognizedTextSubscription = interval(5000).subscribe(() => {
+      this.http.get<any>(`/api/documents/${documentId}/recognized-text`, { headers }).subscribe({
+        next: (response) => {
+          this.recognizedText = response.recognized_text;
+        },
+        error: (error) => {
+          console.error('Error fetching recognized text', error);
+        }
+      });
     });
   }
 
