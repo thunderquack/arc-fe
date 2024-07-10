@@ -311,7 +311,8 @@ export class DocumentComponent implements OnInit {
             this.http.put(`/api/documents/${documentId}/pages/${pageId}`, formData, { headers }).subscribe({
               next: (response) => {
                 console.log('Page rotated and replaced successfully', response);
-                this.loadDocument(documentId); // Reload the document to get updated pages
+                this.pages[index].image = rotatedImage;
+                this.selectedPage.image = rotatedImage;
               },
               error: (error) => {
                 console.error('Error rotating and replacing page', error);
