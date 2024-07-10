@@ -43,13 +43,14 @@
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
-    overflow: auto;
+    align-items: flex-start;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .page-viewer img {
     max-width: 100%;
-    height: auto;
+    max-height: 100%;
     object-fit: contain;
 }
 

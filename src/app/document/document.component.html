@@ -78,8 +78,8 @@
                     (click)="onDeletePage($event)">Delete Page</button>
         </as-split-area>
         <as-split-area>
-            <div class="page-viewer">
-                <!-- Просмотр страницы -->
+            <div class="page-viewer"
+                 #pageViewer>
                 <img *ngIf="selectedPage"
                      [src]="selectedPage.image"
                      alt="Document Page">

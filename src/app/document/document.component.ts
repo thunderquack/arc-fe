@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
@@ -18,6 +18,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
   selectedPage: any;
   loading: boolean = false;
   private recognizedTextSubscription: Subscription | null = null;
+  @ViewChild('pageViewer') pageViewer: ElementRef | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -95,6 +96,15 @@ export class DocumentComponent implements OnInit, OnDestroy {
 
   selectPage(page: any): void {
     this.selectedPage = page;
+    this.scrollToTop();
+  }
+
+  scrollToTop(): void {
+    if (this.pageViewer && this.pageViewer.nativeElement) {
+      const pageViewerElement = this.pageViewer.nativeElement as HTMLElement;
+      console.warn('position = ' + pageViewerElement.scrollTop);
+      pageViewerElement.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   onReplacePage(event: Event): void {
