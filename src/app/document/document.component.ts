@@ -28,6 +28,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
     const documentId: string | null = this.route.snapshot.paramMap.get('id');
     if (documentId) {
       this.loadDocument(documentId);
+      this.loadRecognizedText(documentId);
       this.startRecognizedTextUpdates(documentId);
     } else {
       console.error('No document ID found in the route parameters');
@@ -63,18 +64,25 @@ export class DocumentComponent implements OnInit, OnDestroy {
     });
   }
 
+  loadRecognizedText(documentId: string): void {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.get<any>(`/api/documents/${documentId}/recognized-text`, { headers }).subscribe({
+      next: (response) => {
+        this.recognizedText = response.recognized_text;
+      },
+      error: (error) => {
+        console.error('Error fetching recognized text', error);
+      }
+    });
+  }
+
   startRecognizedTextUpdates(documentId: string): void {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     this.recognizedTextSubscription = interval(5000).subscribe(() => {
-      this.http.get<any>(`/api/documents/${documentId}/recognized-text`, { headers }).subscribe({
-        next: (response) => {
-          this.recognizedText = response.recognized_text;
-        },
-        error: (error) => {
-          console.error('Error fetching recognized text', error);
-        }
-      });
+      this.loadRecognizedText(documentId);
     });
   }
 
@@ -351,7 +359,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
               }
             });
           });
-          this.loadDocument(documentId);
+        this.loadDocument(documentId);
       }
     };
     img.src = page.image;
