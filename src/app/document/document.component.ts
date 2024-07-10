@@ -41,7 +41,8 @@ export class DocumentComponent implements OnInit {
         this.date = new Date(response.created_at).toLocaleDateString();
         this.pages = response.pages.map((page: any) => ({
           ...page,
-          image: this.convertToBase64Image(page.image_data)
+          image: this.convertToBase64Image(page.image_data),
+          thumbnail: this.convertToBase64Image(page.thumbnail_data)
         }));
         this.pages.sort((a, b) => a.page_number - b.page_number);
         this.summary = response.summary || '';
