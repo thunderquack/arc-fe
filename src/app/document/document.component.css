@@ -82,6 +82,14 @@ mat-toolbar + .recognized-text {
     max-height: 170px; 
 }
 
+.page-thumbnail .rotate-buttons {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
 .page-thumbnail .buttons {
     position: absolute;
     right: 5px;

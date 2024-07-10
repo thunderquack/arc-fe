@@ -268,4 +268,61 @@ export class DocumentComponent implements OnInit {
       }
     });
   }
+
+  rotatePageLeft(index: number): void {
+    this.rotatePage(index, -90);
+  }
+
+  rotatePageRight(index: number): void {
+    this.rotatePage(index, 90);
+  }
+
+  rotatePage(index: number, angle: number): void {
+    const page = this.pages[index];
+    const canvas = document.createElement('canvas');
+    const img = new Image();
+    img.onload = () => {
+      const context = canvas.getContext('2d');
+      if (context) {
+        canvas.width = img.height;
+        canvas.height = img.width;
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate((angle * Math.PI) / 180);
+        context.drawImage(img, -img.width / 2, -img.height / 2);
+        const rotatedImage = canvas.toDataURL('image/png');
+
+        // Replace the page with the rotated image
+        const documentId = this.route.snapshot.paramMap.get('id');
+        const pageId = page.page_id;
+        if (!documentId || !pageId) {
+          console.error('No document ID or page ID available');
+          return;
+        }
+
+        fetch(rotatedImage)
+          .then((res) => res.blob())
+          .then((blob) => {
+            const formData = new FormData();
+            formData.append('file', blob, 'image.png');
+
+            const token = localStorage.getItem('authToken');
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+            this.http.put(`/api/documents/${documentId}/pages/${pageId}`, formData, { headers }).subscribe({
+              next: (response) => {
+                console.log('Page rotated and replaced successfully', response);
+                this.loadDocument(documentId); // Reload the document to get updated pages
+              },
+              error: (error) => {
+                console.error('Error rotating and replacing page', error);
+              },
+              complete: () => {
+                console.log('Rotation complete');
+              }
+            });
+          });
+      }
+    };
+    img.src = page.image;
+  }
 }
