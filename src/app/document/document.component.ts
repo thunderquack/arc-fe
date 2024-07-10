@@ -9,6 +9,8 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./document.component.css']
 })
 export class DocumentComponent implements OnInit, OnDestroy {
+  @ViewChild('pageViewer') pageViewer!: ElementRef;
+  
   documentTitle: string = '';
   creator: string = '';
   date: string = '';
@@ -18,7 +20,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
   selectedPage: any;
   loading: boolean = false;
   private recognizedTextSubscription: Subscription | null = null;
-  @ViewChild('pageViewer') pageViewer: ElementRef | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -102,7 +103,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
   scrollToTop(): void {
     if (this.pageViewer && this.pageViewer.nativeElement) {
       const pageViewerElement = this.pageViewer.nativeElement as HTMLElement;
-      console.warn('position = ' + pageViewerElement.scrollTop);
       pageViewerElement.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
