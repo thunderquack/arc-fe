@@ -11,7 +11,7 @@ export class DocumentSearchComponent implements OnInit {
   searchQuery: string = '';
   documents: any[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.loadDocuments();
