@@ -28,14 +28,6 @@
         </mat-form-field>
     </div>
 
-    <div class="recognized-text">
-        <mat-form-field style="width: 100%;">
-            <mat-label>Recognized Text</mat-label>
-            <textarea matInput
-                      [(ngModel)]="recognizedText"></textarea>
-        </mat-form-field>
-    </div>
-
     <as-split [direction]="'horizontal'"
               [gutterSize]="10"
               [unit]="'pixel'">
@@ -78,6 +70,13 @@
                     (click)="onDeletePage($event)">Delete Page</button>
         </as-split-area>
         <as-split-area>
+            <div class="recognized-text">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>Recognized Text</mat-label>
+                    <textarea matInput
+                              [(ngModel)]="recognizedText"></textarea>
+                </mat-form-field>
+            </div>
             <div class="page-viewer"
                  #pageViewer>
                 <img *ngIf="selectedPage"
