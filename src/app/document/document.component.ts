@@ -374,4 +374,19 @@ export class DocumentComponent implements OnInit, OnDestroy {
     };
     img.src = page.image;
   }
+
+  sendRecognizedText(): void {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const payload = { text: this.recognizedText };
+
+    this.http.post(`/api/process_text`, payload, { headers }).subscribe({
+      next: (response) => {
+        console.log('Text processing started successfully', response);
+      },
+      error: (error) => {
+        console.error('Error processing text', error);
+      }
+    });
+  }
 }
