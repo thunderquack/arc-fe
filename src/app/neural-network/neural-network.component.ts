@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-neural-network',
   templateUrl: './neural-network.component.html',
   styleUrls: ['./neural-network.component.css']
 })
-export class NeuralNetworkComponent {
+export class NeuralNetworkComponent implements OnDestroy {
   queryText: string = '';
   responseText: string = '';
+  private taskSubscription: Subscription | null = null;
 
   constructor(private http: HttpClient) { }
 
@@ -36,12 +38,14 @@ export class NeuralNetworkComponent {
   pollTaskStatus(taskId: string): void {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const intervalId = setInterval(() => {
+    this.taskSubscription = interval(5000).subscribe(() => {
       this.http.get<{ status: string, text?: string }>(`/api/task_status/${taskId}`, { headers })
         .subscribe({
           next: (response) => {
             if (response.status === 'processed') {
-              clearInterval(intervalId);
+              if (this.taskSubscription) {
+                this.taskSubscription.unsubscribe();
+              }
               this.responseText = response.text || 'No response text available';
             }
           },
@@ -50,6 +54,12 @@ export class NeuralNetworkComponent {
             alert('Failed to poll task status');
           }
         });
-    }, 5000); // Poll every 5 seconds
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.taskSubscription) {
+      this.taskSubscription.unsubscribe();
+    }
   }
 }
