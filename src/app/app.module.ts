@@ -20,6 +20,7 @@ import { DocumentComponent } from './document/document.component';
 import { DocumentSearchComponent } from './document-search/document-search.component';
 import { AngularSplitModule } from 'angular-split';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NeuralNetworkComponent } from './neural-network/neural-network.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     LoginComponent,
     DocumentComponent,
     DocumentSearchComponent,
+    NeuralNetworkComponent,
   ],
   imports: [
     BrowserModule,

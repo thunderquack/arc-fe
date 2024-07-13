@@ -1,0 +1,24 @@
+<mat-toolbar color="primary">
+    <span>Neural Network Query</span>
+</mat-toolbar>
+
+<div class="container">
+    <mat-form-field class="full-width">
+        <mat-label>Enter your query</mat-label>
+        <textarea matInput
+                  [(ngModel)]="queryText"
+                  rows="5"></textarea>
+    </mat-form-field>
+    <button mat-raised-button
+            color="primary"
+            (click)="sendQuery()">Send Query</button>
+
+    <mat-form-field class="full-width"
+                    *ngIf="responseText">
+        <mat-label>Response</mat-label>
+        <textarea matInput
+                  [value]="responseText"
+                  rows="10"
+                  readonly></textarea>
+    </mat-form-field>
+</div>
