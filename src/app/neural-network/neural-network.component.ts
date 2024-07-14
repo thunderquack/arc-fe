@@ -30,7 +30,6 @@ export class NeuralNetworkComponent implements OnDestroy {
         },
         error: (error) => {
           console.error('Error sending query', error);
-          alert('Failed to send query');
         }
       });
   }
