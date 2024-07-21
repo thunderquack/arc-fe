@@ -70,20 +70,27 @@
                     (click)="onDeletePage($event)">Delete Page</button>
         </as-split-area>
         <as-split-area>
-            <div class="recognized-text">
-                <mat-form-field style="width: 100%;">
-                    <mat-label>Recognized Text</mat-label>
-                    <textarea matInput
-                              [(ngModel)]="recognizedText"
-                              (input)="onRecognizedTextChange()"></textarea>
-                </mat-form-field>
-            </div>
-            <div class="page-viewer"
-                 #pageViewer>
-                <img *ngIf="selectedPage"
-                     [src]="selectedPage.image"
-                     alt="Document Page">
-            </div>
+            <as-split [direction]="'vertical'"
+                      [gutterSize]="10"
+                      [unit]="'percent'">
+                <as-split-area [size]="50">
+                    <div class="recognized-text">
+                        <mat-form-field style="width: 100%;">
+                            <mat-label>Recognized Text</mat-label>
+                            <textarea matInput
+                                      [(ngModel)]="recognizedText"></textarea>
+                        </mat-form-field>
+                    </div>
+                </as-split-area>
+                <as-split-area [size]="50">
+                    <div class="page-viewer"
+                         #pageViewer>
+                        <img *ngIf="selectedPage"
+                             [src]="selectedPage.image"
+                             alt="Document Page">
+                    </div>
+                </as-split-area>
+            </as-split>
         </as-split-area>
     </as-split>
 
