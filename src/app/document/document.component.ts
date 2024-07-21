@@ -30,7 +30,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
     const documentId: string | null = this.route.snapshot.paramMap.get('id');
     if (documentId) {
       this.loadDocument(documentId);
-      this.loadRecognizedText(documentId);
       this.startRecognizedTextUpdates(documentId);
     } else {
       console.error('No document ID found in the route parameters');
@@ -55,7 +54,9 @@ export class DocumentComponent implements OnInit, OnDestroy {
         this.pages = response.pages.map((page: any) => ({
           ...page,
           image: this.convertToBase64Image(page.image_data),
-          thumbnail: this.convertToBase64Image(page.thumbnail_data)
+          thumbnail: this.convertToBase64Image(page.thumbnail_data),
+          recognized_text: page.recognized_text,
+          processed_text: page.processed_text
         }));
         this.pages.sort((a, b) => a.page_number - b.page_number);
         this.summary = response.summary || '';
@@ -66,25 +67,11 @@ export class DocumentComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadRecognizedText(documentId: string): void {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.get<any>(`/api/documents/${documentId}/recognized-text`, { headers }).subscribe({
-      next: (response) => {
-        this.recognizedText = response.recognized_text;
-      },
-      error: (error) => {
-        console.error('Error fetching recognized text', error);
-      }
-    });
-  }
-
   startRecognizedTextUpdates(documentId: string): void {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     this.recognizedTextSubscription = interval(5000).subscribe(() => {
-      this.loadRecognizedText(documentId);
+      this.loadDocument(documentId);
     });
   }
 
@@ -97,6 +84,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
 
   selectPage(page: any): void {
     this.selectedPage = page;
+    this.recognizedText = page.recognized_text || '';
     this.scrollToTop();
   }
 
@@ -104,6 +92,12 @@ export class DocumentComponent implements OnInit, OnDestroy {
     if (this.pageViewer && this.pageViewer.nativeElement) {
       const pageViewerElement = this.pageViewer.nativeElement as HTMLElement;
       pageViewerElement.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  onRecognizedTextChange(): void {
+    if (this.selectedPage) {
+      this.selectedPage.recognized_text = this.recognizedText;
     }
   }
 
@@ -373,20 +367,5 @@ export class DocumentComponent implements OnInit, OnDestroy {
       }
     };
     img.src = page.image;
-  }
-
-  sendRecognizedText(): void {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const payload = { text: this.recognizedText };
-
-    this.http.post(`/api/process_text`, payload, { headers }).subscribe({
-      next: (response) => {
-        console.log('Text processing started successfully', response);
-      },
-      error: (error) => {
-        console.error('Error processing text', error);
-      }
-    });
   }
 }

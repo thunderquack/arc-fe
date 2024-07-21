@@ -1,7 +1,5 @@
 <mat-toolbar color="primary">
     <span>Document Editor</span>
-    <button mat-button
-            (click)="sendRecognizedText()">Send Text</button>
 </mat-toolbar>
 
 <div class="container">
@@ -76,7 +74,8 @@
                 <mat-form-field style="width: 100%;">
                     <mat-label>Recognized Text</mat-label>
                     <textarea matInput
-                              [(ngModel)]="recognizedText"></textarea>
+                              [(ngModel)]="recognizedText"
+                              (input)="onRecognizedTextChange()"></textarea>
                 </mat-form-field>
             </div>
             <div class="page-viewer"
