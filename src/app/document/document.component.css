@@ -124,3 +124,7 @@ as-split {
 .spinner-container {
     position: relative;
 }
+
+.preview-zone {
+    height: 100%;
+}
