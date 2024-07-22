@@ -52,10 +52,18 @@
 
 .recognized-text {
     width: 100%;
+    height: 100%;
     padding: 1em;
     box-sizing: border-box;
-    height: 100%;
     overflow: auto;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
 }
 
 as-split {
@@ -123,8 +131,4 @@ as-split {
 
 .spinner-container {
     position: relative;
-}
-
-.preview-zone {
-    height: 100%;
 }
