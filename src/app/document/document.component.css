@@ -132,26 +132,3 @@ as-split {
 .spinner-container {
     position: relative;
 }
-
-.recognized-text {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-mat-form-field.full-height {
-    display: flex;
-    flex: 1;
-}
-
-.mat-mdc-form-field-infix {
-    display: flex;
-    flex: 1;
-    height: 100%;
-}
-
-textarea.mat-mdc-input-element {
-    flex: 1;
-    height: 100% !important;
-    resize: none;
-}
