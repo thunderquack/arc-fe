@@ -128,3 +128,10 @@ as-split {
 .preview-zone {
     height: 100%;
 }
+
+.full-zone {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
